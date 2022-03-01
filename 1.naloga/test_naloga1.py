@@ -35,7 +35,13 @@ def test_naloga1(case_dir, case_id):
     print(f"Cas izvajanja: {end-start:.2f} s")
 
 
-test_naloga1("./primeri", 1)
-test_naloga1("./primeri", 2)
-test_naloga1("./primeri", 3)
+# print("TESTNI PRIMERI")
+# test_naloga1("./primeri", 1)
+# test_naloga1("./primeri", 2)
+# test_naloga1("./primeri", 3)
 # test_naloga1("./primeri", 4)
+# test_naloga1("./primeri", 5)
+
+print("SKRITI TESTNI PRIMERI")
+for i in range(1, 11):
+    test_naloga1("./primeri_skriti", i)
