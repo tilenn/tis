@@ -38,3 +38,4 @@ def test_naloga1(case_dir, case_id):
 test_naloga1("./primeri", 1)
 test_naloga1("./primeri", 2)
 test_naloga1("./primeri", 3)
+# test_naloga1("./primeri", 4)

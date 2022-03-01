@@ -1,5 +1,4 @@
 import collections
-from itertools import count
 from math import log2
 
 
@@ -29,6 +28,7 @@ def naloga1(besedilo, p):
 
     # formatira besedilo v bolj prijazno obliko
     besedilo = "".join([crka for crka in besedilo if crka.isalpha()]).upper()
+    # print(besedilo)
 
     counter_za_crke = collections.Counter(besedilo)
     # print(counter_za_crke)
@@ -36,10 +36,10 @@ def naloga1(besedilo, p):
     str_len = len(besedilo)
     H = 0
 
-    for letter, val in counter_za_crke.items():
+    for val in counter_za_crke.values():
         H -= (val / str_len) * log2(val / str_len)
 
-    # print(H)
+    # print("H", H)
     if p == 0:
         return H
 
@@ -51,7 +51,7 @@ def naloga1(besedilo, p):
     H2 = 0
     for val in dvojcki.values():
         H2 += (val / st_vseh_dvojckov) * log2(st_vseh_dvojckov / val)
-    print(H2)
+    # print("H2", H2)
 
     if p == 1:
         return H2 - H
@@ -65,7 +65,7 @@ def naloga1(besedilo, p):
     H3 = 0
     for val in trojcki.values():
         H3 += (val / st_vseh_trojckov) * log2(st_vseh_trojckov / val)
-    print(H3)
+    # print("H3", H3)
     return H3 - H2
 
     # return H
