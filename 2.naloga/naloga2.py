@@ -59,7 +59,7 @@ def naloga2(vhod: list, nacin: int) -> tuple[list, float]:
     """
     if nacin == 0:
         return zakodiraj(vhod)
-    # return dekodiraj(vhod)
+    return dekodiraj(vhod)
 
     # izhod = []
     # R = float('nan')
