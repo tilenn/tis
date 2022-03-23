@@ -21,14 +21,25 @@ def zakodiraj(vhod: list) -> tuple[list, float]:
 
 
 def dekodiraj(vhod: list) -> tuple[list, float]:
-    print("dekodiraj")
     izhod = []
 
     # zgradimo osnovni slovar, ki vsebuje vse 8-bitne vrednosti
-    slovar = dict((chr(i), i) for i in range(2**8))
-    indeks_naslednejga_vnosa_v_slovar = 256
+    slovar = dict((i, chr(i)) for i in range(2**8))
+    idx_next_vnos = 256
 
-    return ["d", "e", "l", "a"], 3.14
+    curr_niz = slovar[vhod[0]]
+    izhod.append(curr_niz)
+
+    for znak in vhod[1:]:
+        n = slovar.get(znak, curr_niz + curr_niz[0])
+        for letter in n:
+            izhod.append(letter)
+        if idx_next_vnos < 4096:
+            slovar[idx_next_vnos] = curr_niz + n[0]
+            idx_next_vnos += 1
+        curr_niz = n
+
+    return izhod, (12 * len(vhod)) / (8 * len(izhod))
 
 
 def naloga2(vhod: list, nacin: int) -> tuple[list, float]:
