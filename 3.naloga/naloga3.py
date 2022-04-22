@@ -35,7 +35,7 @@ def naloga3(vhod: list, n: int) -> tuple[list, str]:
     # po vrsticah ima binarno zapisana stevila
     # v zadnjih vrsticah so potence stevila 2, tako da rata identiteta
 
-    tmp = np.unpackbits(
+    non_powers_of_two = np.unpackbits(
         np.array(
             [i for i in range(1, n + 1) if (i & (i - 1) != 0)],
             dtype=np.uint8,
@@ -47,8 +47,11 @@ def naloga3(vhod: list, n: int) -> tuple[list, str]:
     m_identity_matrix = np.eye(m, dtype=np.uint8)
     # print(m_identity_matrix)
 
-    H_transponse = np.vstack((tmp, m_identity_matrix))
-    print(H_transponse)
+    H_transponse = np.vstack((non_powers_of_two, m_identity_matrix))
+    # print(H_transponse)
+
+    S = y.dot(H_transponse) % 2
+    print(S)
 
     izhod = []
     crc = ""
