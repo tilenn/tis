@@ -26,7 +26,6 @@ def naloga3(vhod: list, n: int) -> tuple[list, str]:
 
     # vhod
     y = np.array(vhod, dtype=np.uint8).reshape(len(vhod) // n, n)
-    print("y (vhodno sporocilo): ", y, sep="\n")
 
     # stevilo varnostnih bitov
     m = int(log2(n + 1))
@@ -42,17 +41,27 @@ def naloga3(vhod: list, n: int) -> tuple[list, str]:
         ),
         bitorder="little",
     ).reshape(n - m, 8)[:, :m]
-    # print(tmp)
 
     m_identity_matrix = np.eye(m, dtype=np.uint8)
-    # print(m_identity_matrix)
 
     H_transponse = np.vstack((non_powers_of_two, m_identity_matrix))
-    # print(H_transponse)
+    syndrome = (y @ (H_transponse)) % 2
 
-    S = y.dot(H_transponse) % 2
-    print(S)
+    # spremenimo v stevilo
+    H_transponse = np.packbits(H_transponse, axis=-1, bitorder="little")
+    syndrome = np.packbits(syndrome, axis=-1, bitorder="little")
 
-    izhod = []
+    izhod = np.array([], dtype=np.uint8)
+    for i, col_s in enumerate(syndrome):
+        # preverimo, ce je sindrom razlicen od 0
+        if col_s != 0:
+            # pogledamo katera vrstica je povrsti
+            for j, col_h in enumerate(H_transponse):
+                if col_s == col_h:
+                    y[i][j] = 0 if y[i][j] == 1 else 1
+                    break
+        izhod = np.append(izhod, y[i][:-m])
+
+    print(izhod)
     crc = ""
-    return (izhod, crc)
+    return (izhod.tolist(), crc)

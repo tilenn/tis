@@ -18,34 +18,35 @@ def test_naloga3(case_dir, case_id):
 
     # Naložimo vhodne podatke in rešitev
     base_path = Path(__file__).parent
-    file_path = base_path / str(case_dir) / (str(case_id) + '.json')
-    json_file = open(file_path, 'r', encoding='utf8')
+    file_path = base_path / str(case_dir) / (str(case_id) + ".json")
+    json_file = open(file_path, "r", encoding="utf8")
     data = json.load(json_file, strict=False)
 
     # Poženemo rešitev domače naloge in izmerimo izvajalni čas
     start = timer()
-    izhod, crc = naloga3(data['vhod'], data['n'])
+    izhod, crc = naloga3(data["vhod"], data["n"])
     end = timer()
     t_elapsed = end - start
 
     # Ovrednotimo rešitev
-    success_izhod = izhod == data['izhod']
-    success_crc = crc.upper() == data['crc'].upper()
-    success = success_izhod*0.5 + success_crc*0.5
+    success_izhod = izhod == data["izhod"]
+    success_crc = crc.upper() == data["crc"].upper()
+    success = success_izhod * 0.5 + success_crc * 0.5
 
     # Izpišemo rezultat
-    print("-"*72)
+    print("-" * 72)
     print(f"Rezultat za primer {case_id}: {success} točk")
     if success_izhod != 1:
-        print(' ✗ Napačen `izhod`')
+        print(" ✗ Napačen `izhod`")
     if success_crc != 1:
-        print(' ✗ Napačen `crc`')
+        print(" ✗ Napačen `crc`")
         print(f'   -> Izračunani crc: "{crc}"')
         print(f'   -> Pravilni crc:   "{data["crc"]}"')
     print(f"Čas izvajanja: {t_elapsed:.4f} s")
     if t_elapsed > t_max:
         print(
-            f" -> Čas izvajanja je daljši od {t_max:.1f} sekund! Razmislite o optimizaciji kode.")
+            f" -> Čas izvajanja je daljši od {t_max:.1f} sekund! Razmislite o optimizaciji kode."
+        )
 
 
 def main(case_dir="primeri", case_id=None, *other):
@@ -64,9 +65,13 @@ def main(case_dir="primeri", case_id=None, *other):
 
     # Preverimo morebitne odvečne argumente ukazne vrstice (pospravljeni so v other)
     if other:
-        print(("Napačno število argumentov! Podali ste {} preveč.\n"
-               "Zagon:  python test_naloga3.py [mapa_s_primeri] [stevilka_primera]\n"
-               "Primer: python test_naloga3.py primeri 1").format(len(other)))
+        print(
+            (
+                "Napačno število argumentov! Podali ste {} preveč.\n"
+                "Zagon:  python test_naloga3.py [mapa_s_primeri] [stevilka_primera]\n"
+                "Primer: python test_naloga3.py primeri 1"
+            ).format(len(other))
+        )
         exit()
 
     # Poženemo za vse primere;
