@@ -2,6 +2,50 @@ import numpy as np
 from math import log2
 
 
+def calc_crc(vhod: list) -> str:
+    prev = np.ones(8, dtype=np.uint8)
+    curr = np.ones(8, dtype=np.uint8)
+    p_8 = np.array([0], dtype=np.uint8)
+    # print(" 0 1 2 3 4 5 6 7  vhod p_8")
+    # print(prev)
+    for bit in vhod:
+        p_8 = bit ^ prev[7]
+
+        # print(prev, bit, "  ", p_8)
+        curr[0] = p_8
+        curr[1] = prev[0] ^ p_8
+        curr[2] = prev[1]
+        curr[3] = prev[2] ^ p_8
+        curr[4] = prev[3] ^ p_8
+        curr[5] = prev[4]
+        curr[6] = prev[5]
+        curr[7] = prev[6] ^ p_8
+
+        prev[0] = curr[0]
+        prev[1] = curr[1]
+        prev[2] = curr[2]
+        prev[3] = curr[3]
+        prev[4] = curr[4]
+        prev[5] = curr[5]
+        prev[6] = curr[6]
+        prev[7] = curr[7]
+
+    # print(curr)
+    tmp = np.array2string(curr, separator="")[1:-1][::-1]
+    # print(tmp)
+
+    f = hex(int(tmp[:4], 2))[-1:]
+    crc = [f]
+    if f.islower():
+        crc[0] = f.upper()
+    s = hex(int(tmp[4:], 2))[-1:]
+    crc.append(s)
+    if s.islower():
+        crc[1] = s.upper()
+
+    return "".join(crc)
+
+
 def naloga3(vhod: list, n: int) -> tuple[list, str]:
     """
     Izvedemo dekodiranje binarnega niza `vhod`, zakodiranega
@@ -62,6 +106,6 @@ def naloga3(vhod: list, n: int) -> tuple[list, str]:
                     break
         izhod = np.append(izhod, y[i][:-m])
 
-    print(izhod)
-    crc = ""
+    # print(izhod)
+    crc = calc_crc(vhod)
     return (izhod.tolist(), crc)
