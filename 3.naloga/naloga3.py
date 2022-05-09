@@ -3,37 +3,24 @@ from math import log2
 
 
 def calc_crc(vhod: list) -> str:
-    prev = np.ones(8, dtype=np.uint8)
-    curr = np.ones(8, dtype=np.uint8)
-    p_8 = np.array([0], dtype=np.uint8)
-    # print(" 0 1 2 3 4 5 6 7  vhod p_8")
-    # print(prev)
+    poly = np.packbits([1, 1, 0, 1, 1, 0, 0, 1])
+    reg = np.packbits([1, 1, 1, 1, 1, 1, 1, 1])
+    p_8 = np.packbits([0, 0, 0, 0, 0, 0, 0, 0])
     for bit in vhod:
-        p_8 = bit ^ prev[7]
-
-        # print(prev, bit, "  ", p_8)
-        curr[0] = p_8
-        curr[1] = prev[0] ^ p_8
-        curr[2] = prev[1]
-        curr[3] = prev[2] ^ p_8
-        curr[4] = prev[3] ^ p_8
-        curr[5] = prev[4]
-        curr[6] = prev[5]
-        curr[7] = prev[6] ^ p_8
-
-        prev[0] = curr[0]
-        prev[1] = curr[1]
-        prev[2] = curr[2]
-        prev[3] = curr[3]
-        prev[4] = curr[4]
-        prev[5] = curr[5]
-        prev[6] = curr[6]
-        prev[7] = curr[7]
-
-    # print(curr)
-    tmp = np.array2string(curr, separator="")[1:-1][::-1]
+        # p_7 = reg & 1
+        p_7 = np.bitwise_and(reg, 1)
+        p_8 = np.bitwise_xor(p_7, bit)
+        # print(np.unpackbits(reg), bit, p_8)
+        if np.all(p_8 == 0):
+            reg = np.right_shift(reg, 1)
+        else:
+            reg = np.right_shift(reg, 1)
+            # print("enak", np.unpackbits(reg))
+            reg = np.bitwise_xor(reg, poly)
+            reg = np.bitwise_or(reg, 128)
+    tmp = np.unpackbits(reg)[::-1]
+    tmp = np.array2string(tmp, separator="")[1:-1]
     # print(tmp)
-
     f = hex(int(tmp[:4], 2))[-1:]
     crc = [f]
     if f.islower():
@@ -43,6 +30,7 @@ def calc_crc(vhod: list) -> str:
     if s.islower():
         crc[1] = s.upper()
 
+    # print("".join(crc))
     return "".join(crc)
 
 
