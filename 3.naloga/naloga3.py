@@ -3,24 +3,18 @@ from math import log2
 
 
 def calc_crc(vhod: list) -> str:
-    poly = np.packbits([1, 1, 0, 1, 1, 0, 0, 1])
-    reg = np.packbits([1, 1, 1, 1, 1, 1, 1, 1])
-    p_8 = np.packbits([0, 0, 0, 0, 0, 0, 0, 0])
+    poly = 217
+    reg = 255
+    p_8 = 0
+
     for bit in vhod:
-        # p_7 = reg & 1
-        p_7 = np.bitwise_and(reg, 1)
-        p_8 = np.bitwise_xor(p_7, bit)
-        # print(np.unpackbits(reg), bit, p_8)
-        if np.all(p_8 == 0):
-            reg = np.right_shift(reg, 1)
+        p_8 = (reg & 1) ^ bit
+        if p_8 == 0:
+            reg = reg >> 1
         else:
-            reg = np.right_shift(reg, 1)
-            # print("enak", np.unpackbits(reg))
-            reg = np.bitwise_xor(reg, poly)
-            reg = np.bitwise_or(reg, 128)
-    tmp = np.unpackbits(reg)[::-1]
-    tmp = np.array2string(tmp, separator="")[1:-1]
-    # print(tmp)
+            reg = ((reg >> 1) ^ poly) | 128
+
+    tmp = "{0:08b}".format(reg)[::-1]
     f = hex(int(tmp[:4], 2))[-1:]
     crc = [f]
     if f.islower():
@@ -32,6 +26,38 @@ def calc_crc(vhod: list) -> str:
 
     # print("".join(crc))
     return "".join(crc)
+
+
+# def calc_crc(vhod: list) -> str:
+#     poly = np.packbits([1, 1, 0, 1, 1, 0, 0, 1])
+#     reg = np.packbits([1, 1, 1, 1, 1, 1, 1, 1])
+#     p_8 = np.packbits([0, 0, 0, 0, 0, 0, 0, 0])
+
+#     enka = np.packbits([0, 0, 0, 0, 0, 0, 0, 1])
+#     l = np.packbits([1, 0, 0, 0, 0, 0, 0, 0])
+#     for bit in vhod:
+#         p_8 = np.bitwise_xor(np.bitwise_and(reg, enka), bit)
+#         if np.all(p_8 == 0):
+#             reg = np.right_shift(reg, enka)
+#         else:
+#             reg = np.bitwise_or(
+#                 np.bitwise_xor(np.right_shift(reg, enka), poly),
+#                 l,
+#             )
+#     tmp = np.unpackbits(reg)[::-1]
+#     tmp = np.array2string(tmp, separator="")[1:-1]
+#     # print(tmp)
+#     f = hex(int(tmp[:4], 2))[-1:]
+#     crc = [f]
+#     if f.islower():
+#         crc[0] = f.upper()
+#     s = hex(int(tmp[4:], 2))[-1:]
+#     crc.append(s)
+#     if s.islower():
+#         crc[1] = s.upper()
+
+#     # print("".join(crc))
+#     return "".join(crc)
 
 
 def naloga3(vhod: list, n: int) -> tuple[list, str]:
