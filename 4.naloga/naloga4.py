@@ -54,20 +54,20 @@ def naloga4(vhod: list, fs: int) -> str:
         987.77: "H2",
     }
     akordi = {
-        "Cdur": ["C1", "E1", "G1"],
-        "Cmol": ["C1", "DIS1", "G1"],
-        "Ddur": ["D1", "FIS1", "A1"],
-        "Dmol": ["D1", "F1", "A1"],
-        "Edur": ["E1", "GIS1", "H1"],
-        "Emol": ["E1", "G1", "H1"],
-        "Fdur": ["F1", "A1", "C2"],
-        "Fmol": ["F1", "GIS1", "C2"],
-        "Gdur": ["G1", "H1", "D2"],
-        "Gmol": ["G1", "B1", "D2"],
-        "Adur": ["A1", "CIS2", "E2"],
-        "Amol": ["A1", "C2", "E2"],
-        "Hdur": ["H1", "DIS2", "FIS2"],
-        "Hmol": ["H1", "D2", "FIS2"],
+        "Cdur": {"C1", "E1", "G1"},
+        "Cmol": {"C1", "DIS1", "G1"},
+        "Ddur": {"D1", "FIS1", "A1"},
+        "Dmol": {"D1", "F1", "A1"},
+        "Edur": {"E1", "GIS1", "H1"},
+        "Emol": {"E1", "G1", "H1"},
+        "Fdur": {"F1", "A1", "C2"},
+        "Fmol": {"F1", "GIS1", "C2"},
+        "Gdur": {"G1", "H1", "D2"},
+        "Gmol": {"G1", "B1", "D2"},
+        "Adur": {"A1", "CIS2", "E2"},
+        "Amol": {"A1", "C2", "E2"},
+        "Hdur": {"H1", "DIS2", "FIS2"},
+        "Hmol": {"H1", "D2", "FIS2"},
     }
 
     stevilo_vzorcev = len(vhod)
@@ -107,7 +107,7 @@ def naloga4(vhod: list, fs: int) -> str:
     izhod_tmp = set(izhod_tmp)
     for key, val in akordi.items():
         # print(key, val)
-        if izhod_tmp <= set(val):
+        if izhod_tmp <= val:
             return key
 
     return ""
