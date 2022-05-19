@@ -1,12 +1,5 @@
 import numpy as np
 
-# fs je stevilo vzorcev, ki jih vzamemo na sekundo
-def is_contained(arr, val):
-    for v in arr:
-        if abs(v - val) < 5:
-            return False
-    return True
-
 
 def naloga4(vhod: list, fs: int) -> str:
     """
@@ -79,14 +72,23 @@ def naloga4(vhod: list, fs: int) -> str:
 
     frekvence = []
     counter = 0
+    f = 0
     for i in range(int(len(vhod) / 2)):
         index_max = np.where(P == np.max(P))
-        frequency = index_max[0][0] * delta_f
+        frekvenca = index_max[0][0] * delta_f
         P = np.delete(P, index_max[0][0])
-        if frequency < 1000 and counter < 3 and is_contained(frekvence, frequency):
+        f = 0
+        if frekvenca < 1000 and counter < 3:
+            for v in frekvence:
+                if abs(v - frekvenca) < 5:
+                    f = 1
+                    break
+
+            if f == 1:
+                continue
             counter += 1
             # print(frekvence, frequency)
-            frekvence.append(frequency)
+            frekvence.append(frekvenca)
             if counter == 3:
                 break
             # print(frequency)
